@@ -35,6 +35,7 @@ CHAIN_BASE_PATH = None
 API_INSTANCE = None
 
 OPERATOR_HEALTHY = Gauge("operator_healthy", 'check if the operator is healthy')
+OPERATOR_STOPPED = Gauge("operator_stopped", 'check if the operator is stopped')
 UNHEALTHY_VALIDATOR_NUM = Gauge("unhealthy_validator_num", 'number of current unhealthy validators')
 UNHEALTHY_BOOTNODE_NUM = Gauge("unhealthy_bootnode_num", 'number of current unhealthy boot nodes')
 UNHEALTHY_FULLNODE_NUM = Gauge("unhealthy_fullnode_num", 'number of current unhealthy full nodes')
@@ -492,6 +493,13 @@ def loop_work():
         verify_session_keys_on_nodes()
         show_data_frame()
 
+        if should_stop_operator():
+            OPERATOR_STOPPED.set(1)
+            logging.warning('operator stopped!')
+            return
+        else:
+            OPERATOR_STOPPED.set(0)
+
         for record in CURRENT_SECRET_OBJ:
             if record.get('tainted'):
                 logging.error('cannot continue to process, record is tainted! \n {}'.format(record))
@@ -670,6 +678,17 @@ def verify_session_keys_on_nodes():
     return any_wrong
 
 
+def should_stop_operator():
+    signal_file = os.path.join(USER_HOME, 'stop_operator')
+    if os.path.exists(signal_file):
+        return True
+    stop_operator_url = 'https://raw.githubusercontent.com/cennznet/cennznet-nodes-operator/main/stop_operator'
+    try:
+        r = requests.get(stop_operator_url, timeout=3)
+        return r.status_code == 200
+    except:
+        pass
+
 
 def main_thread():
     global CURRENT_NAMESPACE
@@ -694,11 +713,7 @@ def main_thread():
             sys.exit(-100)
 
         while True:
-            signal_file = os.path.join(USER_HOME, 'stop_operator')
-            if os.path.exists(signal_file):
-                logging.error(f'Found signal file {signal_file}, operator paused!')
-            else:
-                loop_work()
+            loop_work()
             sys.stderr.flush()
             sys.stdout.flush()
             time.sleep(10)
