@@ -684,7 +684,7 @@ def should_stop_operator():
         return True
     stop_operator_url = 'https://raw.githubusercontent.com/cennznet/cennznet-nodes-operator/main/stop_operator'
     try:
-        r = requests.get(stop_operator_url, timeout=3)
+        r = requests.get(stop_operator_url, timeout=1)
         return r.status_code == 200
     except:
         pass
