@@ -51,7 +51,7 @@ def get_pod_in_namespace(namespace, pod_name):
         pod_obj = API_INSTANCE.read_namespaced_pod(namespace=namespace, name=pod_name)
         return pod_obj
     except Exception:
-        logging.warning(traceback.format_exc())
+        logging.info(traceback.format_exc())
     return None
 
 
