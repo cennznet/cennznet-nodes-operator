@@ -48,6 +48,8 @@ def download_snapshot_for_node(node_type, snapshot_name=None):
             cmd = 'tar -xzvf x.tar.gz'
             rc, out = run_cmd(cmd)
             logging.info(f'Unzipped snapshot file rc={rc}')
+            cmd = 'rm -f x.tar.gz'
+            rc, out = run_cmd(cmd)
     else:
         logging.info('No need to download snapshot!')
 
