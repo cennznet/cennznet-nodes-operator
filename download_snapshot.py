@@ -26,7 +26,7 @@ USER_HOME = expanduser("~")
 S3_PREFIX_URL = 'https://s3-ap-southeast-1.amazonaws.com/cennznet-snapshots.centralityapp.com/azalea/1.2.2'
 
 DATA_DIR = '/mnt/cennznet'
-DATA_DIR = '/Users/maochuanli/snapshot_mnt_cennznet'
+# DATA_DIR = '/Users/maochuanli/snapshot_mnt_cennznet'
 FLAG_FILE = f'{DATA_DIR}/download_snapshot'
 
 def run_cmd(cmd):
