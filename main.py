@@ -158,10 +158,10 @@ def backup_current_secret():
 
     cmd = 'kubectl delete secret --ignore-not-found=true {} -n {}'.format(
         SECRET_NAME_BACKUP, CURRENT_NAMESPACE)
-    rc, out = run_cmd(cmd)
+    rc, out = run_cmd_until_ok(cmd)
     cmd = 'kubectl create secret generic {} --from-file={} -n {}'.format(
         SECRET_NAME_BACKUP, SECRET_FILE_NAME, CURRENT_NAMESPACE)
-    rc, out = run_cmd(cmd)
+    rc, out = run_cmd_until_ok(cmd)
     return rc == 0
 
 
@@ -176,11 +176,11 @@ def create_update_operator_secret(session_key_json_obj):
 
     cmd = 'kubectl delete secret --ignore-not-found=true {} -n {}'.format(
         SECRET_NAME, CURRENT_NAMESPACE)
-    rc, out = run_cmd(cmd)
+    rc, out = run_cmd_until_ok(cmd)
 
     cmd = 'kubectl create secret generic {} --from-file={} -n {}'.format(
         SECRET_NAME, SECRET_FILE_NAME, CURRENT_NAMESPACE)
-    rc, out = run_cmd(cmd)
+    rc, out = run_cmd_until_ok(cmd)
     return rc == 0
 
 
