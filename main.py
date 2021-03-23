@@ -45,6 +45,8 @@ TAINT_VALIDATOR_COUNT = Gauge("tainted_validator_count", 'number of tainted vali
 RESTART_BOOTNODE_COUNT = Gauge("restart_bootnode_count", 'number of restarting boot nodes')
 RESTART_FULLNODE_COUNT = Gauge("restart_fullnode_count", 'number of restarting full nodes')
 
+STOP_OPERATOR_URL = 'https://raw.githubusercontent.com/cennznet/cennznet-nodes-operator/main/stop_operator'
+STOP_OPERATOR_URL = 'https://raw.githubusercontent.com/cennznet/cennznet-nodes-operator/stop_operator_branch/stop_operator'
 
 def get_pod_in_namespace(namespace, pod_name):
     try:
@@ -682,9 +684,8 @@ def should_stop_operator():
     signal_file = os.path.join(USER_HOME, 'stop_operator')
     if os.path.exists(signal_file):
         return True
-    stop_operator_url = 'https://raw.githubusercontent.com/cennznet/cennznet-nodes-operator/main/stop_operator'
     try:
-        r = requests.get(stop_operator_url, timeout=1)
+        r = requests.get(STOP_OPERATOR_URL, timeout=1)
         return r.status_code == 200
     except:
         pass
