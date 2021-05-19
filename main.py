@@ -411,7 +411,8 @@ def insert_keys(namespace, pod_name, node_session_key):
     rc = insert_key_type(namespace, pod_name, 'audi', node_session_key)
     rc2 = insert_key_type(namespace, pod_name, 'babe', node_session_key)
     rc3 = insert_key_type(namespace, pod_name, 'imon', node_session_key)
-    rc4 = insert_key_type(namespace, pod_name, 'gran', node_session_key, 'Ed25519')
+    #rc4 = insert_key_type(namespace, pod_name, 'gran', node_session_key, 'Ed25519')
+    rc4 = insert_key_type(namespace, pod_name, 'gran', node_session_key)
     SWAP_VALIDATOR_COUNT.inc(1)
     if (rc + rc2 + rc3 + rc4) > 0:
         logging.error('failed to insert session key to {}/{}'.format(namespace, pod_name))
