@@ -412,8 +412,9 @@ def insert_keys(namespace, pod_name, node_session_key):
     rc2 = insert_key_type(namespace, pod_name, 'babe', node_session_key)
     rc3 = insert_key_type(namespace, pod_name, 'imon', node_session_key)
     rc4 = insert_key_type(namespace, pod_name, 'gran', node_session_key, 'Ed25519')
+    rc5 = insert_key_type(namespace, pod_name, 'eth-', node_session_key, 'Ecdsa')
     SWAP_VALIDATOR_COUNT.inc(1)
-    if (rc + rc2 + rc3 + rc4) > 0:
+    if (rc + rc2 + rc3 + rc4 + rc5) > 0:
         logging.error('failed to insert session key to {}/{}'.format(namespace, pod_name))
         return
     else:
@@ -652,7 +653,10 @@ def verify_session_keys_on_nodes():
                     record['tainted'] = True
                     any_wrong = True
                 continue
-            elif file_count == 4:
+            elif file_count in [4, 5]: 
+                # generally it's 4 session files
+                # but after cennznet-2.0.0
+                # we have added one session key for eth
                 if len(session_key) <= 0:
                     logging.error('no session key assigned, but session key files exist!!!')
                     record['tainted'] = True

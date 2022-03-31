@@ -14,7 +14,6 @@ command:
   - "/bin/bash"
   - "-c"
   - >
-    curl -o main.py https://raw.githubusercontent.com/cennznet/cennznet-nodes-operator/main/main.py;
     python3 main.py --log_level WARN;
 
 
