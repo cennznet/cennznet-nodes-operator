@@ -653,7 +653,10 @@ def verify_session_keys_on_nodes():
                     record['tainted'] = True
                     any_wrong = True
                 continue
-            elif file_count == 4:
+            elif file_count in [4, 5]: 
+                # generally it's 4 session files
+                # but after cennznet-2.0.0
+                # we have added one session key for eth
                 if len(session_key) <= 0:
                     logging.error('no session key assigned, but session key files exist!!!')
                     record['tainted'] = True
